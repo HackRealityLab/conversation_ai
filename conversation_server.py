@@ -67,6 +67,7 @@ def serve(address: str) -> None:
 
     health_check_thread = threading.Thread(target=run_health_check_server)
     health_check_thread.start()
+
     server.wait_for_termination()
 
 
