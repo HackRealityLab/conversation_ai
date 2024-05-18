@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package conversation;
+
+service Conversation {
+  rpc AnalyzeAudio (stream ConversationRequest) returns (stream ConversationReply) {}
+}
+
+message ConversationRequest {
+  string conversationID = 1;
+  string fileName = 2;
+  bytes file = 3;
+}
+
+message ConversationReply {
+  string text = 1;
+}
