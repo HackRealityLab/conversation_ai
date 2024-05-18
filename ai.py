@@ -75,7 +75,7 @@ def run_ai(pipe: Pipeline, audio: bytes) -> str:
     # Use this for transcription (Change <"language": "german"> to your audio files language)
     print("run ai")
     result = pipe(audio, generate_kwargs={"language": "russian", "task": "transcribe"})
-    print("got result")
+    print(f"got result{result}")
     # Use this for translation to English (Change <"language": "german"> to your audio files language)
     # result = pipe(audio, generate_kwargs={"language": "german", "task": "translate"})
 
