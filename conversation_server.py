@@ -44,6 +44,9 @@ class HttpGetHandler(BaseHTTPRequestHandler):
         self.send_response(200)
         self.end_headers()
 
+    def log_message(*args):
+        pass
+
 
 def run_health_check_server(server_class=HTTPServer, handler_class=HttpGetHandler):
     server_address = ('', 5001)
