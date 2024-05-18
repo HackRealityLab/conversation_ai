@@ -19,7 +19,7 @@ faster-whisper==0.10.0
 filelock==3.14.0
 flatbuffers==24.3.25
 frozenlist==1.4.1
-fsspec==2024.5.0
+fsspec
 grpcio==1.63.0
 grpcio-tools==1.63.0
 h11==0.14.0
