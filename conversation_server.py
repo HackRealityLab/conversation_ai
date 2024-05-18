@@ -55,9 +55,12 @@ def run_health_check_server(server_class=HTTPServer, handler_class=HttpGetHandle
 
 
 def serve(address: str) -> None:
+    print("start setup ai")
     pipe = setup_ai()
+    print("end setup ai")
     conservation_service = Conversation(pipe)
 
+    print("start http server")
     server = grpc.server(ThreadPoolExecutor())
     conversation_pb2_grpc.add_ConversationServicer_to_server(conservation_service, server)
 
