@@ -21,8 +21,8 @@ from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline, Pip
 
 
 def setup_ai() -> Pipeline:
-    # device = "cuda:0" if torch.cuda.is_available() else "cpu"
-    device = "cpu"
+    device = "cuda:0" if torch.cuda.is_available() else "cpu"
+    # device = "cpu"
     torch_dtype = torch.float16 if torch.cuda.is_available() else torch.float32
 
     """### Specifies the model"""
