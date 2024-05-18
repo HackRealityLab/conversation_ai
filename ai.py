@@ -73,14 +73,16 @@ def run_ai(pipe: Pipeline, audio: bytes) -> str:
     """### Sets the language and task (Transcription, Translation)"""
 
     # Use this for transcription (Change <"language": "german"> to your audio files language)
+    print("run ai")
     result = pipe(audio, generate_kwargs={"language": "russian", "task": "transcribe"})
-
+    print("got result")
     # Use this for translation to English (Change <"language": "german"> to your audio files language)
     # result = pipe(audio, generate_kwargs={"language": "german", "task": "translate"})
 
     """### Formats the output and saves it to a text file"""
 
     # Saves the Models Output to a text file in Google Colabs "/content/" directory
+    print("save result")
     res = ""
     for i, chunk in enumerate(result['chunks']):
         start_time, end_time = chunk['timestamp']
@@ -92,6 +94,7 @@ def run_ai(pipe: Pipeline, audio: bytes) -> str:
         res += f"Start Time: {formatted_start_time}, End Time: {formatted_end_time}\n\n"
         res += f"Text: {text}\n"
 
+    print("return result")
     return res
 
     # with open('/content/whisper_output.txt', 'r') as f:

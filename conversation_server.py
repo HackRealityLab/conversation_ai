@@ -28,7 +28,9 @@ class Conversation(conversation_pb2_grpc.ConversationServicer):
         print("Start bidi streaming")
 
         for request in request_iterator:
+            print(f"Got file with name: {request.fileName}")
             text = run_ai(self.pipe, request.file)
+            print(f"ai text: {text}")
 
             yield conversation_pb2.ConversationReply(text=text)
 
