@@ -9,13 +9,19 @@ class ConversationRequest(_message.Message):
     CONVERSATIONID_FIELD_NUMBER: _ClassVar[int]
     FILENAME_FIELD_NUMBER: _ClassVar[int]
     FILE_FIELD_NUMBER: _ClassVar[int]
-    conversationID: str
+    conversationID: int
     fileName: str
     file: bytes
-    def __init__(self, conversationID: _Optional[str] = ..., fileName: _Optional[str] = ..., file: _Optional[bytes] = ...) -> None: ...
+    def __init__(self, conversationID: _Optional[int] = ..., fileName: _Optional[str] = ..., file: _Optional[bytes] = ...) -> None: ...
 
 class ConversationReply(_message.Message):
-    __slots__ = ("text",)
+    __slots__ = ("conversationID", "text", "good_percent", "bad_percent")
+    CONVERSATIONID_FIELD_NUMBER: _ClassVar[int]
     TEXT_FIELD_NUMBER: _ClassVar[int]
+    GOOD_PERCENT_FIELD_NUMBER: _ClassVar[int]
+    BAD_PERCENT_FIELD_NUMBER: _ClassVar[int]
+    conversationID: int
     text: str
-    def __init__(self, text: _Optional[str] = ...) -> None: ...
+    good_percent: int
+    bad_percent: int
+    def __init__(self, conversationID: _Optional[int] = ..., text: _Optional[str] = ..., good_percent: _Optional[int] = ..., bad_percent: _Optional[int] = ...) -> None: ...

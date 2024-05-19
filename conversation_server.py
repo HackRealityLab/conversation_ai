@@ -29,10 +29,15 @@ class Conversation(conversation_pb2_grpc.ConversationServicer):
 
         for request in request_iterator:
             print(f"Got file with name: {request.fileName}")
-            text = run_ai(self.pipe, request.file)
-            print(f"ai text: {text}")
+            text, good_percent, bad_percent = run_ai(self.pipe, request.file)
+            print(f"ai result: {text, good_percent, bad_percent}")
 
-            yield conversation_pb2.ConversationReply(text=text)
+            yield conversation_pb2.ConversationReply(
+                conversationID=request.conversationID,
+                text=text,
+                good_percent=good_percent,
+                bad_percent=bad_percent
+            )
 
         print("Stop bidi streaming")
 

@@ -6,7 +6,7 @@ grpcio-tools
 protobuf
 pydantic_core
 faster-whisper
-torch
+torch==1.12.0a0+2c916ef
 torchvision
 torchaudio
 uvicorn
@@ -18,3 +18,9 @@ transformers
 setuptools
 soundfile
 nltk
+numpy
+xlrd
+re
+pickle
+difflib
+fuzzywuzzy

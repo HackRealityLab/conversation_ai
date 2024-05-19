@@ -17,6 +17,12 @@ Original file is located at
 import torch
 from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline, Pipeline
 
+import re
+import pickle
+
+from fuzzywuzzy import process
+from nltk.stem.snowball import RussianStemmer
+
 """### Sets up the device and data types"""
 
 
@@ -61,15 +67,17 @@ def setup_ai() -> Pipeline:
 """### Specifies the audio file path and filetype"""
 
 
-# Formats the timestamps to be more readable
+# Formats thedock timestamps to be more readable
 def format_time(seconds):
-    hours = int(seconds // 3600)
-    minutes = int((seconds % 3600) // 60)
-    seconds = int(seconds % 60)
-    return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
+    if type(seconds) != type(None):
+        hours = int(seconds // 3600)
+        minutes = int((seconds % 3600) // 60)
+        seconds = int(seconds % 60)
+        return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
+    return '--:--:--'
 
 
-def run_ai(pipe: Pipeline, audio: bytes) -> str:
+def run_ai(pipe: Pipeline, audio: bytes) -> tuple[str, int, int]:
     """### Sets the language and task (Transcription, Translation)"""
 
     # Use this for transcription (Change <"language": "german"> to your audio files language)
@@ -80,25 +88,73 @@ def run_ai(pipe: Pipeline, audio: bytes) -> str:
     # result = pipe(audio, generate_kwargs={"language": "german", "task": "translate"})
 
     """### Formats the output and saves it to a text file"""
-
     # Saves the Models Output to a text file in Google Colabs "/content/" directory
-    print("save result")
-    res = ""
-    for i, chunk in enumerate(result['chunks']):
-        start_time, end_time = chunk['timestamp']
-        formatted_start_time = format_time(start_time)
-        formatted_end_time = format_time(end_time)
-        text = chunk['text']
-
-        res += f"Segment {i + 1}:\n"
-        res += f"Start Time: {formatted_start_time}, End Time: {formatted_end_time}\n\n"
-        res += f"Text: {text}\n"
+    # print("save result")
+    # res = ""
+    # for i, chunk in enumerate(result['chunks']):
+    #     start_time, end_time = chunk['timestamp']
+    #     formatted_start_time = format_time(start_time)
+    #     formatted_end_time = format_time(end_time)
+    #     text = chunk['text']
+    #
+    #     res += f"Segment {i + 1}:\n"
+    #     res += f"Start Time: {formatted_start_time}, End Time: {formatted_end_time}\n\n"
+    #     res += f"Text: {text}\n"
 
     print("return result")
-    return res
+    ans = result_process(result)
+    return ans
 
-    # with open('/content/whisper_output.txt', 'r') as f:
-    #     orig = f.read()
-    # with open('/content/whisper_output_96.txt', 'r') as f:
-    #     orig_96 = f.read()
-    # orig == orig_96
+
+def result_process(result) -> tuple[str, int, int]:
+    # Открываем файлы white_list, black_list
+    with open('white_list', 'rb') as f:
+        white_list = pickle.load(f)
+
+    with open('black_list', 'rb') as f:
+        black_list = pickle.load(f)
+
+    # Убираем окончания
+    stemmer = RussianStemmer()
+    stem_white_list = [stemmer.stem(x) for x in white_list]
+
+    # Обрабатываем результат распознавания
+    # Получаем текст
+    text = result['text'].strip()
+    # Вырезаем "Продолжение следует..."
+    text = text.replace('Продолжение следует...', '')
+    # Вырезаем описание звуков капсом
+    matches = re.findall(
+        r"(\b(?:[А-Я]+[а-я]?[А-Я]+|[А-Я]*[а-я]?[А-Я]+)\b(?:\s+(?:[А-Я]+[а-я]?[А-Я]+|[А-Я]*[а-я]?[А-Я]+)\b)*)", text)
+    for i in matches:
+        text = text.replace(i, '')
+
+    # Считаем коэфы
+    words = [word.strip('., ') for word in text.split()]
+
+    # вайт-лист
+    correct_words = []
+    for i in words:
+        x = process.extractOne(stemmer.stem(i), stem_white_list)
+        # print(i, x)
+        # x = process.extractOne(i, white_list)
+        if x[1] > 90:
+            correct_words.append(i)
+            # print(i, x)
+    correct_ratio = round(len(correct_words) / len(words) * 100)
+
+    # блэк-лист
+    incorrect_words = []
+    for word in black_list:
+        # print(i, x)
+        x = process.extractOne(word, words)
+        if x[1] > 90:
+            incorrect_words.append(x[0])
+            # print(word, x)
+    incorrect_ratio = round(len(incorrect_words) / len(words) * 100)
+
+    # Выделение неправильных слов звездочками
+    for i in incorrect_words:
+        text = text.replace(i, f'*{i}*')
+
+    return text, correct_ratio, incorrect_ratio

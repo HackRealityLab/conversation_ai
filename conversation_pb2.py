@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x12\x63onversation.proto\x12\x0c\x63onversation\"M\n\x13\x43onversationRequest\x12\x16\n\x0e\x63onversationID\x18\x01 \x01(\t\x12\x10\n\x08\x66ileName\x18\x02 \x01(\t\x12\x0c\n\x04\x66ile\x18\x03 \x01(\x0c\"!\n\x11\x43onversationReply\x12\x0c\n\x04text\x18\x01 \x01(\t2h\n\x0c\x43onversation\x12X\n\x0c\x41nalyzeAudio\x12!.conversation.ConversationRequest\x1a\x1f.conversation.ConversationReply\"\x00(\x01\x30\x01\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x12\x63onversation.proto\x12\x0c\x63onversation\"M\n\x13\x43onversationRequest\x12\x16\n\x0e\x63onversationID\x18\x01 \x01(\x03\x12\x10\n\x08\x66ileName\x18\x02 \x01(\t\x12\x0c\n\x04\x66ile\x18\x03 \x01(\x0c\"d\n\x11\x43onversationReply\x12\x16\n\x0e\x63onversationID\x18\x01 \x01(\x03\x12\x0c\n\x04text\x18\x02 \x01(\t\x12\x14\n\x0cgood_percent\x18\x03 \x01(\x03\x12\x13\n\x0b\x62\x61\x64_percent\x18\x04 \x01(\x03\x32h\n\x0c\x43onversation\x12X\n\x0c\x41nalyzeAudio\x12!.conversation.ConversationRequest\x1a\x1f.conversation.ConversationReply\"\x00(\x01\x30\x01\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -24,7 +24,7 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_CONVERSATIONREQUEST']._serialized_start=36
   _globals['_CONVERSATIONREQUEST']._serialized_end=113
   _globals['_CONVERSATIONREPLY']._serialized_start=115
-  _globals['_CONVERSATIONREPLY']._serialized_end=148
-  _globals['_CONVERSATION']._serialized_start=150
-  _globals['_CONVERSATION']._serialized_end=254
+  _globals['_CONVERSATIONREPLY']._serialized_end=215
+  _globals['_CONVERSATION']._serialized_start=217
+  _globals['_CONVERSATION']._serialized_end=321
 # @@protoc_insertion_point(module_scope)
