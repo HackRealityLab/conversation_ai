@@ -1,6 +1,7 @@
 FROM nvcr.io/nvidia/pytorch:23.10-py3
 
 WORKDIR /usr/src/app
+RUN python -m pip install --upgrade pip
 RUN apt-get update
 RUN apt-get install -y curl
 RUN apt-get  install libsndfile1 -y
