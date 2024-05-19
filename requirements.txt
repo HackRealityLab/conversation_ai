@@ -6,7 +6,7 @@ grpcio-tools
 protobuf
 pydantic_core
 faster-whisper
-torch==1.12.0a0+2c916ef
+torch
 torchvision
 torchaudio
 uvicorn
