@@ -20,7 +20,4 @@ soundfile
 nltk
 numpy
 xlrd
-re
-pickle
-difflib
 fuzzywuzzy
